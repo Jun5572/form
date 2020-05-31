@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <title>Form@Vue.js</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.rawgit.com/milligram/milligram/master/dist/milligram.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <link href="css/style.css" rel="stylesheet">
+  </head>
+  <body>
+    <div class="container" id="form-app">
+      <main class="block">
+        <h1 class="title">お問い合わせフォーム</h1>
+        <div class="block-body">
+           <form action="" class="form">
+            <fieldset>
+              <div class="form-group">
+                <label for="name">お名前<span class="badge">10文字</span></label>
+                <p class="errors" v-for="error in errors.name">{{error}}</p>
+                <input type="text" name="name" id="name" v-model="name" v-on:input="validator('name', 10)">
+              </div>
+              <div class="form-group">
+                <label for="subject">件名<span class="badge">20文字</span></label>
+                <p class="errors" v-for="error in errors.subject">{{error}}</p>
+                <input type="text" name="subject" id="subject" v-model="subject" v-on:input="validator('subject', 20)">
+              </div>
+              <div class="form-group">
+                <label for="content">内容<span class="badge">50文字</span></label>
+                <p class="errors" v-for="error in errors.content">{{error}}</p>
+                <div class="form-row">
+                  <textarea type="text" name="content" id="content" v-model="content" v-on:input="validator('content', 50)"></textarea>
+                </div>
+              </div>
+            </fieldset>  
+           </form> 
+        </div>
+      </main>
+    </div>
+    
+    <script>
+      let formApp = new Vue({
+        el: "#form-app",
+        data: {
+          name: "",
+          subject: "",
+          content: "",
+          errors: {
+            name: [],
+            subject: [],
+            content: []
+          }
+        },
+      methods: {
+        validator: function(type, max) {
+          let name = [];
+          let subject = [];
+          let content = [];
+          let message = max + "文字以内で入力してください。";
+
+          if( type === "name" ){
+            if( this.name.length > max ){
+              name.push(message);
+            }
+            this.errors.name = name;
+          } else if( type === "subject" ){
+            if( this.subject.length > max ) {
+              subject.push(message);
+            }
+            this.errors.subject = subject;
+          } else if( type === "content" ){
+            if( this.content.length > max ){
+              content.push(message);
+            }
+            this.errors.content = content;
+          }
+        },
+      },
+      });
+    </script>
+  </body>
+</html>
